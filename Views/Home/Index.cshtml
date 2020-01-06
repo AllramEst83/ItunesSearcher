@@ -1,0 +1,149 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ItunesSearcher.Interfaces
+@using ItunesSearcher.Services
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IGenreService GenreService
+@inject IWishService WishService
+
+@{
+    ViewData["Title"] = "Start page";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="input-group inputContainer">
+
+            <input id="searchInput" type="text" class="form-control" placeholder="Search Itunes for stuff..." aria-label="Search for apps" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button id="searchButton" class="btn btn-outline-secondary" type="button">Search</button>
+            </div>
+
+
+        </div>
+
+        <div class="input-group inputContainer">
+            <select class="form-control" id="genreSelect">
+
+                @foreach (var genre in GenreService.GetGenres())
+                {
+                    <option value="@genre.GenreId">@genre.GenreName</option>
+                }
+
+            </select>
+        </div>
+
+        <div class="input-group inputContainer" hidden>
+            <select class="form-control" id="paidSelect" disabled>
+
+                <option value="paid">Paid</option>
+                <option value="free">free</option>
+
+            </select>
+        </div>
+
+    </div>
+
+
+
+
+    <div class="col-md-9">
+
+        <div class="tableContainer">
+            <table id="itunesContentTable" class="contentTable table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Namn</th>
+                        <th>Beskrivning</th>
+                        <th>Bild</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @* Datatables *@
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="col-md-3 cardContainer">
+            
+        <div class="card">
+            <div class="card-header">Wishlist</div>
+            <div class="card-body wishListBody">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    @if (WishService.UserHasWishes())
+                    {
+                        <ul class="list-group">
+                            @foreach (var wish in WishService.ReturnUserWishes())
+                            {
+
+
+                                <li class="list-group-item d-flex justify-content-between align-items-center" data-itemid="@wish.Id">
+
+                                    @wish.TrackName
+
+                                    <div class="image-parent">
+                                        <img data-appId="@wish.AppId" src="@wish.AppImageUrl" class="img-fluid wishedhApp lessRoundEdges" alt="appImage">
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <div>
+                            No wishes added yet!
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="loggedOutMessage">
+                        Pleas sign in to see your wishlist
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="appPopUp">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="card">
+                    <img class="card-img-top" src="" alt="Card image cap">
+                    <div class="card-body dialogCardBody">
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
