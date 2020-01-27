@@ -130,11 +130,15 @@ body {
 
 .image-parent {
     max-width: 15%;
-    margin-left:5px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+.addAppImage {
+    cursor: pointer;
 }
 
-.list-group-item{
-    word-wrap:break-word;
+.list-group-item {
+    word-wrap: break-word;
 }
 
 .loggedOutMessage{

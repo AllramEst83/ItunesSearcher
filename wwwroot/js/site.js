@@ -9,5 +9,6 @@ $(function () {
     SearchService.OpenAppModal();
     SearchService.AddWish();
     SearchService.RemoveWishedApp();
+    SearchService.ListenToKeyPress();
 
 });

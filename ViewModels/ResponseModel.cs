@@ -9,5 +9,6 @@ namespace ItunesSearcher.ViewModels
     {
         public string Message { get; set; }
         public object Data { get; set; } = new { };
+        public bool AppAdded { get; set; } = false;
     }
 }

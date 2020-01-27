@@ -92,12 +92,12 @@ namespace ItunesSearcher.Services
                     WishlistDbContext.Wishes.Add(newWish);
                     WishlistDbContext.SaveChanges();
 
-                    response = new ResponseModel() { Message = "App has successfully been added", Data = newWish };
+                    response = new ResponseModel() { Message = "App has successfully been added", Data = newWish, AppAdded = true };
 
                     return response;
                 }
 
-                response = new ResponseModel() { Message = "App is already added" };
+                response = new ResponseModel() { Message = "App is already added", AppAdded = false };
 
             }
             catch (Exception ex)

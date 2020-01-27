@@ -46,6 +46,10 @@ namespace ItunesSearcher
 
             services.Configure<IdentityOptions>(options =>
             {
+                //SignIn settings
+                options.SignIn.RequireConfirmedEmail = false;
+                //options.SignIn.RequireConfirmedAccount = false;
+
                 // Password settings.
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;

@@ -1,7 +1,6 @@
 ﻿
 var SearchService = {
 
-
     GetAllGenres: function () {
 
         var url = SearchService.GenresUrl;
@@ -20,39 +19,68 @@ var SearchService = {
 
         $(".tableContainer").on("click", ".addAppImage", function () {
 
-
-            var id = $(this).data("appid");
             var trackname = $(this).data("trackname");
+            var id = $(this).data("appid");
             var beskrivning = $(this).data("desc");
             var appImageUrl = $(this).attr("src");
 
-            var data = {
-                AppId: id,
-                TrackName: trackname,
-                Beskrivning: beskrivning,
-                AppImageUrl: appImageUrl
-            };
+            $.confirm({
+                title: 'Add app to wishlist?',
+                content: `Do you want to add this app: ${trackname}?`,
+                buttons: {
+                    ok: {
+                        text: "Add app",
+                        btnClass: "btn-success",
+                        action: function () {
 
-            $.ajax({
-                url: "api/wishlist",
-                type: "POST",
-                data: JSON.stringify(data),
-                contentType: "application/json",
-                success: function (data) {
+                            var data = {
+                                AppId: id,
+                                TrackName: trackname,
+                                Beskrivning: beskrivning,
+                                AppImageUrl: appImageUrl
+                            };
 
-                    console.log(data);
-                    SearchService.UpdateWishList(data);
+                            $.ajax({
+                                url: "api/wishlist",
+                                type: "POST",
+                                data: JSON.stringify(data),
+                                contentType: "application/json",
+                                success: function (data) {
+                                    var notificationColor = "";
 
-                    alert(data.message);
-                },
-                error: function (jqXHR, textStatus, errorThrowns) {
+                                    if (data.appAdded) {
 
+                                        SearchService.UpdateWishList(data);
+
+                                        notificationColor = "success";
+
+                                    } else {
+
+                                        notificationColor = "info";
+
+                                    }
+
+                                    $.notify(data.message, notificationColor);
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrowns) {
+
+                                    $.notify(textStatus, "error");
+                                }
+                            });
+                        }
+                    },
+                    cancel: {
+                        text: "Don`t add app",
+                        btnClass: "btn-danger",
+                        action: function () { }
+                    }
                 }
             });
-
         });
     },
     UpdateWishList: function (response) {
+
         var html = '<li class="list-group-item d-flex justify-content-between align-items-center" data-itemid="' + response.data.id + '">';
         html += response.data.trackName;
         html += '<div class="image-parent">';
@@ -66,30 +94,49 @@ var SearchService = {
         console.log(response);
         $("li[data-itemid='" + response.data.id + "']").remove();
     },
-
     RemoveWishedApp: function () {
 
         $(".wishListBody").on('click', ".wishedhApp", function () {
 
-            var id = $(this).data("appid");
+            var trackname = $(this).data("trackname");
+            var appId = $(this).data("appid");
 
-            $.ajax({
-                url: "api/wishlist",
-                type: "DELETE",
-                data: { id: JSON.stringify(id) },
-                success: function (data) {
+            $.confirm({
+                title: 'Remove app from wishlist?',
+                content: `Do you want to add this app: ${trackname}?`,
+                buttons: {
+                    ok: {
+                        text: "Remove app",
+                        btnClass: "btn-success",
+                        action: function () {
 
-                    SearchService.RemoveAppfromWishList(data);
 
-                    alert(data.message);
 
-                },
-                error: function (jqXHR, textStatus, errorThrowns) {
+                            $.ajax({
+                                url: "api/wishlist",
+                                type: "DELETE",
+                                data: { id: JSON.stringify(appId) },
+                                success: function (data) {
 
-                    alert(`Something went wrong: ${textStatus}`);
+                                    SearchService.RemoveAppfromWishList(data);
+
+
+                                    $.notify(data.message, "success");
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrowns) {
+
+                                    $.notify(`Something went wrong: ${textStatus}`, "error");
+                                }
+                            });
+                        }
+                    },
+                    cancel: {
+                        text: "Don`t remove app",
+                        btnClass: "btn-danger",
+                        action: function () { }
+                    }
                 }
-
-
             });
         });
 
@@ -203,7 +250,7 @@ var SearchService = {
         return;
     },
     GetAppName: function (data, type, full, meta) {
-        return "<a id='tableAppId' href='#' data-appid=" + full.Id + " data-toggle='modal' data-target='#appPopUp'>" + data + "</a>";
+        return "<a id='tableAppId' href='javascript:void(0);' data-appid=" + full.Id + ">" + data + "</a>";
     },
     ShapeData: function (data) {
         var returnData = [];
@@ -228,32 +275,58 @@ var SearchService = {
         var image = '<img data-desc="' + full.Beskrivning + '" data-trackname="' + full.Namn + '" data-appid="' + full.Id + '" class="img-fluid roundEdges addAppImage"  src="' + data + '" />';
         return image;
     },
+    CheckCurrentDevice: function () {
+
+        var isMobile = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        if (isMobile) {
+            return true;
+        }
+
+        return false;
+    },
+    AppDescriptionBaseUrl: "http://itunes.apple.com/us/app/id",
     OpenAppModal: function () {
         $(".tableContainer").on('click', "#itunesContentTable a", function () {
 
-            console.log($(this).data("appid"));
-
             var id = $(this).data("appid");
-            var lookupUrl = SearchService.LookupUrl;
-            lookupUrl += id;
+            var userMessage = "`Do you want to open the app description in a new tab?";
+            if (SearchService.CheckCurrentDevice()) {
+                userMessage = "Do you want to go to the app description?";
+            }
+            $.confirm({
+                title: 'Go to app description',
+                content: userMessage,
+                buttons: {
+                    ok: {
+                        text: "Yes please",
+                        btnClass: "btn-success",
+                        action: function () {
+                            var url = SearchService.AppDescriptionBaseUrl + id;                  
 
-            console.log(lookupUrl);
+                            if (SearchService.CheckCurrentDevice()) {
 
-            $.when(SearchService.AjaxCall(lookupUrl)).then(function (data) {
+                                window.location.href = url;
+                            } else {
 
-                console.log(data);
-
-                $(".modal-title").empty();
-                $(".dialogCardBody").empty();
-                $(".card-img-top").attr("src", "");
-
-                $(".modal-title").text(data.results[0].trackName);
-                $(".dialogCardBody").text(data.results[0].description);
-                $(".card-img-top").attr("src", data.results[0].artworkUrl512);
-                // $(".modal-title").text(data.results[0].trackName);
-
+                                window.open(url, "_blank");
+                            }
+                        }
+                    },
+                    cancel: {
+                        text: "No",
+                        btnClass: "btn-danger",
+                        action: function () { }
+                    }
+                }
             });
-
+        });
+    },
+    ListenToKeyPress: function () {
+        $(document).on('keypress',function (event) {
+            var keycode = event.keyCode || event.which;
+            if (keycode == '13') {
+                $("#searchButton").click();
+            }
         });
     },
     SearchItunes: function () {
@@ -284,10 +357,11 @@ var SearchService = {
                     table.clear();
                     table.rows.add(shapedData).draw();
                 } else {
-                    alert("Nothing to show!");
+
+                    $.notify("No search matches found", "info");
                 }
 
-                 $.unblockUI();
+                $.unblockUI();
             });
 
         });
