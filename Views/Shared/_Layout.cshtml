@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <title>@ViewData["Title"] - Itunes Searcher</title>
 
-    <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+    <link rel="icon" type="image/png" href="~/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="~/favicon-16x16.png" sizes="16x16" />
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     @*<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />*@
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-
-
     <link href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet" />
+    <link href="~/css/jquery-confirm.min.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -58,6 +59,8 @@
 
     <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
+    <script src="~/js/notify.min.js"></script>
+    <script src="~/js/jquery-confirm.min.js"></script>
 
     <script src="~/js/SearchService.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
