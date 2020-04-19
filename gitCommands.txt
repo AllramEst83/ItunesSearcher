@@ -1,0 +1,21 @@
+﻿GitForWin
+
+git commit -a
+git add
+
+press -> i -> enter commit message -> "Insert"
+
+press ESC to exit message mode
+
+write -> :x! -> press enter to commit
+write :q! -> press enter to abort/quite
+
+----------
+
+git push -> to push commits to origin
+
+----------
+
+git status -> current status on branch
+
+----------
