@@ -188,11 +188,13 @@ var SearchService = {
             var counter = 0;
 
             for (var i = 0; i < data.resultIds.length; i++) {
+
                 lookUpUrl += data.resultIds[i];
 
                 if (resultCount !== counter) {
                     lookUpUrl += ",";
                 }
+
                 counter++;
             }
 
@@ -279,6 +281,7 @@ var SearchService = {
 
         var isMobile = /iPhone|iPad|iPod/i.test(navigator.userAgent);
         if (isMobile) {
+
             return true;
         }
 
