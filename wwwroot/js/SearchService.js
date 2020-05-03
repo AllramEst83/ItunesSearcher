@@ -82,7 +82,7 @@ var SearchService = {
     UpdateWishList: function (response) {
 
         var html = '<li class="list-group-item d-flex justify-content-between align-items-center" data-itemid="' + response.data.id + '">';
-        html += response.data.trackName;
+        html += '<a href="javascript:void(0);" data-appid="' + response.data.appId + '">' + response.data.trackName + '</a>';
         html += '<div class="image-parent">';
         html += ' <img data-appId="' + response.data.appId + '" src="' + response.data.appImageUrl + '" class="img-fluid lessRoundEdges wishedhApp" alt="appImage">';
         html += '</div></li>';
@@ -287,15 +287,16 @@ var SearchService = {
 
         return false;
     },
-    AppDescriptionBaseUrl: "http://itunes.apple.com/us/app/id",
-    OpenAppModal: function () {
-        $(".tableContainer").on('click', "#itunesContentTable a", function () {
+    AppDescriptionBaseUrl: "http://itunes.apple.com/se/app/id",
+    OpenWishListModal: function () {
+        $(".wishListBody a").on('click', function () {
 
             var id = $(this).data("appid");
-            var userMessage = "`Do you want to open the app description in a new tab?";
+            var userMessage = "Do you want to open the app description in a new tab?";
             if (SearchService.CheckCurrentDevice()) {
                 userMessage = "Do you want to go to the app description?";
             }
+
             $.confirm({
                 title: 'Go to app description',
                 content: userMessage,
@@ -304,7 +305,44 @@ var SearchService = {
                         text: "Yes please",
                         btnClass: "btn-success",
                         action: function () {
-                            var url = SearchService.AppDescriptionBaseUrl + id;                  
+                            var url = SearchService.AppDescriptionBaseUrl + id;
+
+                            if (SearchService.CheckCurrentDevice()) {
+
+                                window.location.href = url;
+                            } else {
+
+                                window.open(url, "_blank");
+                            }
+                        }
+                    },
+                    cancel: {
+                        text: "No",
+                        btnClass: "btn-danger",
+                        action: function () { }
+                    }
+                }
+            });
+        });
+    },
+    OpenAppModal: function () {
+        $(".tableContainer").on('click', "#itunesContentTable a", function () {
+
+            var id = $(this).data("appid");
+            var userMessage = "Do you want to open the app description in a new tab?";
+            if (SearchService.CheckCurrentDevice()) {
+                userMessage = "Do you want to go to the app description?";
+            }
+
+            $.confirm({
+                title: 'Go to app description',
+                content: userMessage,
+                buttons: {
+                    ok: {
+                        text: "Yes please",
+                        btnClass: "btn-success",
+                        action: function () {
+                            var url = SearchService.AppDescriptionBaseUrl + id;
 
                             if (SearchService.CheckCurrentDevice()) {
 
@@ -325,9 +363,9 @@ var SearchService = {
         });
     },
     ListenToKeyPress: function () {
-        $(document).on('keypress',function (event) {
+        $(document).on('keypress', function (event) {
             var keycode = event.keyCode || event.which;
-            if (keycode == '13') {
+            if (keycode === '13') {
                 $("#searchButton").click();
             }
         });

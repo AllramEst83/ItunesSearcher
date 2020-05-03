@@ -69,3 +69,5 @@
 /.vs/ItunesSearcher/DesignTimeBuild/.dtbcache.v2
 /obj
 /bin/Debug/netcoreapp3.1
+/.vs/ItunesSearcher/config
+/bin/Release/netcoreapp3.1
