@@ -7,6 +7,7 @@ $(function () {
     SearchService.GetFrontPageApps();
     SearchService.SearchItunes();
     SearchService.OpenAppModal();
+    SearchService.OpenWishListModal();
     SearchService.AddWish();
     SearchService.RemoveWishedApp();
     SearchService.ListenToKeyPress();

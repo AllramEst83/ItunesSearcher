@@ -1,0 +1,28 @@
+﻿GitForWin
+
+git commit -a
+git add
+
+press -> i -> enter commit message -> "Insert"
+
+press ESC to exit message mode
+
+write -> :x! -> press enter to commit
+write :q! -> press enter to abort/quite
+
+----------
+
+git push -> to push commits to origin
+
+----------
+
+git status -> current status on branch
+
+----------
+
+
+
+Add new Key
+https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+
+https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key

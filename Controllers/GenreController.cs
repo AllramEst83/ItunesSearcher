@@ -21,6 +21,7 @@ namespace ItunesSearcher.Controllers
         {
             GenreService = genreService;
         }
+
         // GET: api/<controller>
         [HttpGet]
         public IEnumerable<Genre> Get()
