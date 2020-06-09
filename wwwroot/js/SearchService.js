@@ -8,6 +8,8 @@ var SearchService = {
 
             console.log(data);
 
+            $("#genreSelect").empty()
+
             for (var i = 0; i < data.length; i++) {
 
                 $('#genreSelect').append($('<option>').val(data[i].genreId).text(data[i].genreName));
