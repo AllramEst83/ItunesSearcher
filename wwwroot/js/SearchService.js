@@ -8,6 +8,8 @@ var SearchService = {
 
             console.log(data);
 
+            $("#genreSelect").empty()
+
             for (var i = 0; i < data.length; i++) {
 
                 $('#genreSelect').append($('<option>').val(data[i].genreId).text(data[i].genreName));
@@ -365,7 +367,7 @@ var SearchService = {
     ListenToKeyPress: function () {
         $(document).on('keypress', function (event) {
             var keycode = event.keyCode || event.which;
-            if (keycode === '13') {
+            if (keycode == '13') {
                 $("#searchButton").click();
             }
         });
