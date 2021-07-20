@@ -6,6 +6,7 @@ using ItunesSearcher.Interfaces;
 using ItunesSearcher.Models;
 using ItunesSearcher.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,10 +16,13 @@ namespace ItunesSearcher.Controllers
     [Route("api/[controller]")]
     public class GenreController : Controller
     {
+        private ILogger<GenreController> _logger;
+
         public IGenreService GenreService { get; }
 
-        public GenreController(IGenreService genreService)
+        public GenreController(IGenreService genreService, ILogger<GenreController> logger)
         {
+            _logger = logger;
             GenreService = genreService;
         }
 
@@ -26,8 +30,11 @@ namespace ItunesSearcher.Controllers
         [HttpGet]
         public IEnumerable<Genre> Get()
         {
+            _logger.LogInformation("Éntered genre controller");
 
             List<Genre> genresViewModel = GenreService.GetGenres();
+
+            _logger.LogInformation("Genres collected.", genresViewModel);
 
             return genresViewModel;
         }

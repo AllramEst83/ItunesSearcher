@@ -18,18 +18,28 @@ namespace ItunesSearcher.Controllers
 
         public HomeController(ILogger<HomeController> logger, IWishService wishService)
         {
+
             _logger = logger;
             WishService = wishService;
         }
 
         public IActionResult Index()
         {
+            _logger.LogInformation("Home genre controller");
+
             if (User.Identity.IsAuthenticated)
             {
                 string userId = User.GetUserId();
 
                 WishService.GetWishesByUserId(userId);
+
+                _logger.LogInformation($"User authenticated. UserId: {userId}");
             }
+            else
+            {
+                _logger.LogInformation("User not authenticated");
+            }
+
 
             return View();
         }
