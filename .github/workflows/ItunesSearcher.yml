@@ -19,6 +19,15 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+
+    - name: App Settings Variable Substitution
+      uses: microsoft/variable-substitution@v1
+      with:
+       files: '${{env.DOTNET_ROOT}}/ItunesSearcher/appsettings.json'
+      env:
+       ConnectionStrings.Default: ${{ secrets.AzurePassword }}
+       App.ServerRootAddress: ${{ env.SERVER_ROOT_ADDRESS }}        
+
     - name: Restore
       run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
     - name: Build
