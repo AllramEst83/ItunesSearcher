@@ -23,8 +23,15 @@ namespace ItunesSearcher.Services
 
         public void GetWishesByUserId(string userId)
         {
-            Guid parsedUserId = Guid.Parse(userId);
-            ListOfUserWishes = WishlistDbContext.Wishes.Where(x => x.UserId == parsedUserId).ToList();
+            try
+            {
+                Guid parsedUserId = Guid.Parse(userId);
+                ListOfUserWishes = WishlistDbContext.Wishes.Where(x => x.UserId == parsedUserId).ToList();
+            }
+            catch (Exception ex)
+            {
+                ListOfUserWishes = new List<Wish>();
+            }
         }
 
         public bool UserHasWishes()
