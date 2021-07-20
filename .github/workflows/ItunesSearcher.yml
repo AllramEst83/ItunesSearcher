@@ -25,7 +25,8 @@ jobs:
       with:
        files: 'appsettings.json'
       env:
-       ConnectionStrings.Default: ${{ secrets.AzurePassword }}
+       ConnectionStrings.AuthConnection: ${{ secrets.AzurePassword }}
+       ConnectionStrings.WishlistConnection: ${{ secrets.AzurePassword }}
        App.ServerRootAddress: ${{ env.SERVER_ROOT_ADDRESS }}        
 
     - name: Restore
