@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-ItunesSearcher-86EE9B4B-42DD-4529-8297-201D8CE9B565</UserSecretsId>
-    <ApplicationIcon />
+    <ApplicationIcon>unicornBuff.ico</ApplicationIcon>
   </PropertyGroup>
 
 
